@@ -1,7 +1,7 @@
 <template>
     <div class="login-box">
         <el-form ref="ruleFormRef" :model="ruleForm" status-icon :rules="rules" label-width="80px" class="demo-ruleForm">
-            <h2>后台管理系统</h2>
+            <h2>{{ message }}</h2>
             <el-form-item label="账号：" prop="username">
                 <el-input v-model="ruleForm.username" autocomplete="off" />
             </el-form-item>
@@ -13,14 +13,14 @@
                 </el-button>
                 <el-button class="login-btn" @click="resetForm">重置</el-button>
             </el-form-item>
-        </el-form> 
+        </el-form>
     </div>
 </template>
   
 <script lang="ts">
 import { defineComponent, reactive, toRefs, ref } from "vue";
 import type { FormInstance, FormRules } from 'element-plus';
-// import { login } from "@/request/api";
+import { login } from "../api/login";
 import { useRouter } from "vue-router";
 
 export default defineComponent({
@@ -52,13 +52,16 @@ export default defineComponent({
             if (!formEl) return
             formEl.validate((valid: any) => {
                 if (valid) {
-                    // login(data.ruleForm).then((res: { data: { token: string; }; }) => {
-                    //     //console.log(res)
-                    //     //保存token
-                    //     localStorage.setItem("token", res.data.token)
-                    //     //跳转
-                    //     router.push('/')
-                    // })
+                    login(data.ruleForm).then((res) => {
+                        console.log(res)
+                        console.log(123)
+                        //保存token
+                        if (res.data.code == 0) {
+                            console.log("登陆成功")
+                            router.push('/')
+                        }
+                        console.log("登陆失败")
+                    })
                 } else {
                     console.log('error submit!')
                     return false
@@ -70,13 +73,13 @@ export default defineComponent({
             data.ruleForm.username = "";
             data.ruleForm.password = "";
         }
-
         return {
             ...toRefs(data),
             rules,
             resetForm,
             ruleFormRef,
-            submitForm
+            submitForm,
+            message: '登陆'
         }
     },
 });
