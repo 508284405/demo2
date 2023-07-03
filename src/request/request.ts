@@ -1,9 +1,17 @@
 import axios from 'axios'
 
+// declare module "axios" {
+//   interface AxiosResponse<T = any> {
+//     Result: null;
+//     // 这里追加你的参数
+//   }
+//   export function create(config?: AxiosRequestConfig): AxiosInstance;
+// }
+
 // create an axios instance
 const service = axios.create({
   // baseURL: 'http://chenyp.top:8008', // url = base url + request url
-  baseURL: 'http://127.0.0.1:5173', // url = base url + request url
+  baseURL: 'http://192.168.3.65:8080', // url = base url + request url
   // withCredentials: true, // send cookies when cross-domain requests
   timeout: 5000 // request timeout
 })

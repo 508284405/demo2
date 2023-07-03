@@ -1,8 +1,8 @@
 import request from '../../request/request'
-export function create(data: any) {
+export function connect(data: {}) {
     return request(
         {
-            url: '/redis/info/create',
+            url: '/redis/info/connect',
             method: 'POST',
             data
         }
