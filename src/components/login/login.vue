@@ -1,7 +1,15 @@
 <template>
     <div class="login-box">
-        <el-form ref="formdataRef" :model="formdata" status-icon :rules="rules" label-width="80px" class="demo-ruleForm">
-            <h2>登陆</h2>
+        <el-form ref="formRef" :model="formdata" status-icon :rules="rules" label-width="80px" class="demo-ruleForm">
+            <header class="form-header">
+                <span style="display: flex; align-items: flex-end;">
+                    <h2 class="form-title">
+                        登陆
+                    </h2>
+                </span>
+                <span class="pull-right">没有账号？<a href="/register">去注册</a></span>
+            </header>
+
             <el-form-item label="账号：" prop="username">
                 <el-input v-model="formdata.username" autocomplete="off" />
             </el-form-item>
@@ -9,43 +17,29 @@
                 <el-input v-model="formdata.password" type="password" autocomplete="off" />
             </el-form-item>
             <el-form-item>
-                <el-button type="primary" class="login-btn" @click="submitForm(formdataRef)">登录
+                <el-button type="primary" class="login-btn" @click="submitForm(formdata)">登录
                 </el-button>
                 <el-button class="login-btn" @click="resetForm">重置</el-button>
             </el-form-item>
-            <el-button type="primary" @click="gotoRegister()">去注册</el-button>
         </el-form>
     </div>
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from "vue";
+import { reactive, ref, unref } from "vue";
 import type { FormInstance, FormRules } from 'element-plus';
-import { login } from "../../api/login";
+import { login } from "../../api/login/login";
 import { useRouter } from "vue-router";
-import register from './register.vue'
-const props = defineProps({
-    who: {}
-})
-const formdata = reactive({
-    username: '',
-    password: ''
-})
 
-const formdataRef = ref()
-
-
-interface LoginForm {
-    username: string,
-    password: string
+interface Formdata {
+    username: String,
+    password: String
 }
-class LoginData {
-    ruleForm: LoginForm = {
-        username: "",
-        password: ""
-    }
-}
-const data = reactive(new LoginData)
+
+const formdata = reactive<Formdata>({
+    username: "",
+    password: ""
+})
 const rules = {
     username: [
         { required: true, message: '请输入账号', trigger: 'blur' },
@@ -56,46 +50,37 @@ const rules = {
         { min: 3, max: 10, message: '密码的长度在3-10之间', trigger: 'blur' },
     ],
 }
-const ruleFormRef = ref<FormInstance>()
 const router = useRouter()
-const submitForm = (formEl: FormInstance | undefined) => {
-    if (!formEl) return
-    formEl.validate((valid: any) => {
-        if (valid) {
-            console.log(data.ruleForm)
-            login(data.ruleForm).then((res) => {
-                //保存token
-                if (res.data.code == 0) {
-                    console.log("登陆成功")
-                    router.push('/')
-                }
-                console.log("登陆失败")
-            })
+const formRef = ref<FormInstance>()
+const submitForm = (formdata: Formdata) => {
+    //校验
+    login(formdata).then((res) => {
+        if (res.data.code == 0) {
+            sessionStorage.setItem("token", res.data.data);
+            // res.headers
+            router.push('/redis')
         } else {
-            console.log('error submit!')
-            return false
+            alert(res.data.message)
         }
     })
 }
-//重置
-const resetForm = () => {
-    data.ruleForm.username = "";
-    data.ruleForm.password = "";
+//校验表单数据
+const formEl = (formdata: Formdata): Boolean => {
+    return false
 }
 
-//主动给父组件传值
-const emit = defineEmits(['on-click'])
-
-const gotoRegister = () => {
-     emit('on-click','register')
+//重置
+const resetForm = () => {
+    formdata.username = "";
+    formdata.password = "";
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .login-box {
     width: 100%;
     height: 100%;
-    background: url("../assets/login-bg.jpeg");
+    // background-image: url("https://plus.unsplash.com/premium_photo-1675756583871-6be3905c4ef4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80");
     text-align: center;
     padding: 1px;
 
@@ -115,4 +100,22 @@ const gotoRegister = () => {
         margin-bottom: 20px;
     }
 }
-</style>
+
+.pull-right {
+    float: right;
+}
+
+.form-title {
+    display: flex;
+    align-items: flex-end;
+    font-size: 1.714rem;
+    font-weight: bold;
+}
+
+.form-header {
+    display: flex;
+    align-items: flex-end; //元素置于父元素底部
+    margin-bottom: 20px; //底部空余
+    -webkit-box-pack: justify;
+    justify-content: space-between; //子元素分隔
+}</style>

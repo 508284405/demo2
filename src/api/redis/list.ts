@@ -1,5 +1,5 @@
 import request from '../../request/request'
-export function list(data: {}) {
+export function list(data: SearchDataType | {}) {
     return request(
         {
             url: '/redis/info/list',
@@ -8,6 +8,7 @@ export function list(data: {}) {
         }
     )
 }
+
 class RedisInfoVo {
     id: number;
     ip: string;
@@ -26,4 +27,10 @@ class RedisInfoVo {
         this.groupId = groupId
     }
 }
-export { RedisInfoVo }
+export { RedisInfoVo}
+export interface SearchDataType{
+    createTimeBegin: Number | null,
+    createTimeEnd: Number | null,
+    ip: String,
+    model: Number | null,
+}

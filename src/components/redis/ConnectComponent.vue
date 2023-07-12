@@ -23,9 +23,11 @@
 </template>
   
 <script lang="ts" setup>
-import { reactive, ref, onMounted, watch } from 'vue'
+import { reactive } from 'vue'
 import { connect } from '../../api/redis/connect'
 import { get } from '../../api/redis/get'
+import { useRouter } from 'vue-router';
+const router = useRouter()
 const props = defineProps({
     _id: Number
 })
@@ -42,10 +44,14 @@ let form = reactive({
 
 const onSubmit = () => {
     form.id = props._id
-    console.log(form)
     connect(form).then((res: any) => {
         if (res.data.code == 0) {
-            alert("成功")
+            router.push({
+                path: "/redis/home",
+                query:{
+                    id: props._id
+                }
+            })
         } else {
             alert(res.data.message)
         }

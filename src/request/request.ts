@@ -1,5 +1,7 @@
 import axios from 'axios'
-
+import whiteList from './whitelist'
+//允许发送cookie
+axios.defaults.withCredentials = true
 // declare module "axios" {
 //   interface AxiosResponse<T = any> {
 //     Result: null;
@@ -7,6 +9,7 @@ import axios from 'axios'
 //   }
 //   export function create(config?: AxiosRequestConfig): AxiosInstance;
 // }
+
 
 // create an axios instance
 const service = axios.create({
@@ -17,39 +20,52 @@ const service = axios.create({
 })
 
 // request interceptor
-service.interceptors.request.use(
-  config => config
-)
+service.interceptors.request.use(function (config) {
+  if(config.url && whiteList.includes(config.url)){
+      return config
+  }
+  // 在发送请求之前做些什么
+  // 判断是否存在token,如果存在将每个页面header添加token
+  const token = sessionStorage.getItem("token")
+  if (token != "null") {
+    config.headers.Authorization = token
+  }else{
+    window.location.href='/login'
+  }
+  return config
+}, function (error) {
+  window.location.href='/login'
+  return Promise.reject(error)
+})
 
 // response interceptor
-service.interceptors.response.use(
-  /**
-   * If you want to get http information such as headers or status
-   * Please return  response => response
-  */
-
-  /**
-   * Determine the request status by custom code
-   * Here is just an example
-   * You can also judge the status by HTTP Status Code
-   */
-  response => {
-    return response;
+service.interceptors.response.use(function (response) {
+  // 对响应数据做点什么
+  return response
+}, function (error) {
+  // console.log("eeee")
+  // 对响应错误做点什么
+  if (error.response) {
+    switch (error.response.status) {
+      case 401:
+        window.location.href='/login'
+    }
   }
-)
+  return Promise.reject(error)
+})
 class Result {
   code: number;
   message: string;
   data: any;
-  constructor(code: 0,message: '',data: any){
-      this.code = code
-      this.message =message
-      this.data=data
+  constructor(code: 0, message: '', data: any) {
+    this.code = code
+    this.message = message
+    this.data = data
   }
 }
-export {Result} 
+export { Result }
 
 export default service
 
- 
+
 

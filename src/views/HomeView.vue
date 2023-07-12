@@ -7,7 +7,7 @@
           </el-aside>
           <el-container>
               <el-header>
-                <Header></Header>
+                <home-header></home-header>
               </el-header>
               <el-main>
                 <RouterView />
@@ -19,11 +19,11 @@
 
 <script lang="ts">
 import CommonAside from "../components/CommonAside.vue";
-import Header from "../components/header.vue";
+import HomeHeader from "../components/HomeHeader.vue";
 export default {
   components: {
       CommonAside,
-      Header
+      HomeHeader
   }
 }
 </script>
