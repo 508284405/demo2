@@ -4,7 +4,7 @@
         <RedisAside :id = 'id'></RedisAside>
       </el-aside>
       <el-container>
-        <el-header style="text-align: right; font-size: 12px">
+        <el-header class="header" style="text-align: right; font-size: 12px">
           <RedisHeader></RedisHeader>
         </el-header>
   
@@ -49,6 +49,9 @@
     right: 20px;
   }
   .el-main{
+    background-color: rgb(248, 252, 252);
+  }
+  .header{
     background-color: rgb(248, 252, 252);
   }
   </style>

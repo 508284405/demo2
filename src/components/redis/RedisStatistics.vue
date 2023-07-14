@@ -1,30 +1,86 @@
 <template>
-    <header>
-        <el-button name="Server" @click="getStatistics('Server')">Server</el-button>
-        <el-button name="Clients" @click="getStatistics('Clients')">Clients</el-button>
-        <el-button name="Memory" @click="getStatistics('Memory')">Memory</el-button>
-        <el-button name="Persistence" @click="getStatistics('Persistence')">Persistence</el-button>
-        <el-button name="Stats" @click="getStatistics('Stats')">Stats</el-button>
-        <el-button name="Replication" @click="getStatistics('Replication')">Replication</el-button>
-        <el-button name="Modules" @click="getStatistics('Modules')">Modules</el-button>
-        <el-button name="Cluster" @click="getStatistics('Cluster')">Cluster</el-button>
-        <el-button name="Keyspace" @click="getStatistics('Keyspace')">Keyspace</el-button>
-
-    </header>
-
-    <div style="margin-top: 20px;">
-        <el-table :data="tableData" style="width: 100%">
-            <el-table-column prop="properties" label="属性" width="500px" />
-            <el-table-column prop="value" label="值" width="500px" />
-        </el-table>
-    </div>
+    <el-tabs v-model="activeName" class="demo-tabs" @tab-click="getStatistics(activeName)">
+        <el-tab-pane label="Server" name="Server">
+            <div style="margin-top: 20px;">
+                <el-table :data="tableData" style="width: 100%">
+                    <el-table-column prop="properties" label="属性" width="500px" />
+                    <el-table-column prop="value" label="值" width="500px" />
+                </el-table>
+            </div>
+        </el-tab-pane>
+        <el-tab-pane label="Clients" name="Clients">
+            <div style="margin-top: 20px;">
+                <el-table :data="tableData" style="width: 100%">
+                    <el-table-column prop="properties" label="属性" width="500px" />
+                    <el-table-column prop="value" label="值" width="500px" />
+                </el-table>
+            </div>
+        </el-tab-pane>
+        <el-tab-pane label="Memory" name="Memory">
+            <div style="margin-top: 20px;">
+                <el-table :data="tableData" style="width: 100%">
+                    <el-table-column prop="properties" label="属性" width="500px" />
+                    <el-table-column prop="value" label="值" width="500px" />
+                </el-table>
+            </div>
+        </el-tab-pane>
+        <el-tab-pane label="Persistence" name="Persistence">
+            <div style="margin-top: 20px;">
+                <el-table :data="tableData" style="width: 100%">
+                    <el-table-column prop="properties" label="属性" width="500px" />
+                    <el-table-column prop="value" label="值" width="500px" />
+                </el-table>
+            </div>
+        </el-tab-pane>
+        <el-tab-pane label="Stats" name="Stats">
+            <div style="margin-top: 20px;">
+                <el-table :data="tableData" style="width: 100%">
+                    <el-table-column prop="properties" label="属性" width="500px" />
+                    <el-table-column prop="value" label="值" width="500px" />
+                </el-table>
+            </div>
+        </el-tab-pane>
+        <el-tab-pane label="Replication" name="Replication">
+            <div style="margin-top: 20px;">
+                <el-table :data="tableData" style="width: 100%">
+                    <el-table-column prop="properties" label="属性" width="500px" />
+                    <el-table-column prop="value" label="值" width="500px" />
+                </el-table>
+            </div>
+        </el-tab-pane>
+        <el-tab-pane label="Modules" name="Modules">
+            <div style="margin-top: 20px;">
+                <el-table :data="tableData" style="width: 100%">
+                    <el-table-column prop="properties" label="属性" width="500px" />
+                    <el-table-column prop="value" label="值" width="500px" />
+                </el-table>
+            </div>
+        </el-tab-pane>
+        <el-tab-pane label="Cluster" name="Cluster">
+            <div style="margin-top: 20px;">
+                <el-table :data="tableData" style="width: 100%">
+                    <el-table-column prop="properties" label="属性" width="500px" />
+                    <el-table-column prop="value" label="值" width="500px" />
+                </el-table>
+            </div>
+        </el-tab-pane>
+        <el-tab-pane label="Keyspace" name="Keyspace">
+            <div style="margin-top: 20px;">
+                <el-table :data="tableData" style="width: 100%">
+                    <el-table-column prop="properties" label="属性" width="500px" />
+                    <el-table-column prop="value" label="值" width="500px" />
+                </el-table>
+            </div>
+        </el-tab-pane>
+    </el-tabs>
 </template>
 <script setup lang='ts'>
-import { onMounted,ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { statistics } from '../../api/redis/statistics'
 const route = useRoute()
 const id = (Number)(route.query.id)
+const activeName = ref("Server")
 const tableData = ref([{
     properties: '',
     value: ''
@@ -39,11 +95,11 @@ const getStatistics = (name: string) => {
     })
 }
 
+onMounted(()=>{
+    getStatistics(activeName.value)
+})
+
 </script>
-<style scoped>
-.el-button {
-    margin: 20px 0px 0px 3px;
-    width: 100px;
-    color: rgba(0, 0, 0, .5);
-}
-</style>
+<style scoped>.demo-tabs {
+    margin-left: 10px;
+}</style>
