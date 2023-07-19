@@ -28,7 +28,7 @@
 <script setup lang="ts">
 import { reactive, ref, unref } from "vue";
 import type { FormInstance, FormRules } from 'element-plus';
-import { login } from "../../api/login/login";
+import  login  from "../../api/login/login";
 import { useRouter } from "vue-router";
 
 interface Formdata {
@@ -56,7 +56,8 @@ const submitForm = (formdata: Formdata) => {
     //校验
     login(formdata).then((res) => {
         if (res.data.code == 0) {
-            sessionStorage.setItem("token", res.data.data);
+            sessionStorage.setItem("token", res.data.data.authorization);
+            sessionStorage.setItem("uid", res.data.data.id);
             // res.headers
             router.push('/redis')
         } else {

@@ -1,5 +1,7 @@
 import axios from 'axios'
 import whiteList from './whitelist'
+import {refresh} from '../api/login/login'
+const baseURL = 'http://192.168.3.65:8080'
 //允许发送cookie
 axios.defaults.withCredentials = true
 // declare module "axios" {
@@ -14,7 +16,7 @@ axios.defaults.withCredentials = true
 // create an axios instance
 const service = axios.create({
   // baseURL: 'http://chenyp.top:8008', // url = base url + request url
-  baseURL: 'http://192.168.3.65:8080', // url = base url + request url
+  baseURL: baseURL, // url = base url + request url
   // withCredentials: true, // send cookies when cross-domain requests
   timeout: 5000 // request timeout
 })
@@ -49,6 +51,17 @@ service.interceptors.response.use(function (response) {
     switch (error.response.status) {
       case 401:
         window.location.href='/login'
+      case 402:
+        //续费token
+        const uid = sessionStorage.getItem("uid")
+        if(uid){
+          refresh(uid as unknown as number).then(res=>{
+            if(res.data.code==0){
+              const token = sessionStorage.setItem("token",res.data.data)
+            }
+          })
+        }
+        window.location.href='/login'
     }
   }
   return Promise.reject(error)
@@ -63,7 +76,7 @@ class Result {
     this.data = data
   }
 }
-export { Result }
+export { Result,baseURL }
 
 export default service
 

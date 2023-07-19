@@ -1,7 +1,7 @@
 import request from '../../request/request'
 import common from '../../request/common'
 
-export function login(data: any) {
+export default function login(data: any) {
     return request(
         {
             url: common.loginUrl,
@@ -10,6 +10,15 @@ export function login(data: any) {
                 'content-type': 'application/x-www-form-urlencoded'
             },
             data
+        }
+    )
+}
+
+export function refresh(id: number){
+    return request(
+        {
+            url: common.refreshUrl + "/" + id,
+            method: 'GET',
         }
     )
 }

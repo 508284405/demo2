@@ -7,7 +7,9 @@ import Mysql from '../views/Mysql.vue'
 import RedisHomeView from '../components/redis/RedisHomeView.vue'
 import RedisRealLog from '../components/redis/RedisRealLog.vue'
 import RedisStatistics from '../components/redis/RedisStatistics.vue'
-
+import RedisDirectives from '../components/redis/directives/index.vue'
+import RedisCommands from '../components/redis/command/index.vue'
+import RedisConfigs from '../components/redis/config/index.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -55,6 +57,21 @@ const router = createRouter({
           path: '/redis/statistics',
           name: 'redis_statistics',
           component: RedisStatistics
+        },
+        {
+          path: '/redis/directives/index',
+          name: 'redis_directives_index',
+          component: RedisDirectives
+        },
+        {
+          path: '/redis/command/index',
+          name: 'redis_command_index',
+          component: RedisCommands
+        },
+        {
+          path: '/redis/config/index',
+          name: 'redis_config_index',
+          component: RedisConfigs
         }
       ]
     }
