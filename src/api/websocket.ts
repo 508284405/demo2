@@ -1,6 +1,6 @@
-import { baseURL } from "../request/request";
+import common from "../request/common";
 
-const socket = new WebSocket(`ws://${baseURL.replace("http://","")}/redis/redis/reallog`)
+const socket = new WebSocket(`ws://${common.baseURL.replace("http://","")}/redis/redis/reallog`)
 socket.onerror = (error) => {
     console.log("websocket 发生错误", error)
 }

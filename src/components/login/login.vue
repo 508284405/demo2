@@ -81,7 +81,8 @@ const resetForm = () => {
 .login-box {
     width: 100%;
     height: 100%;
-    // background-image: url("https://plus.unsplash.com/premium_photo-1675756583871-6be3905c4ef4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80");
+    background-image: url("https://wy-public-1306368414.cos.ap-nanjing.myqcloud.com/WechatIMG5%202.png?q-sign-algorithm=sha1&q-ak=AKIDrwbyNV7L80Ow9U8bUHcdpiDdLbhzeD1RYQWjOcNfq9aPPO6jDRvSzA7Ky3qO87Zs&q-sign-time=1690688489;1690692089&q-key-time=1690688489;1690692089&q-header-list=host&q-url-param-list=ci-process&q-signature=53aa250a0c17dacf6ad81615733e8f787ed01c9e&x-cos-security-token=h8Wo2fbvZgbUrO1kuwDS01LU9RYMsdra726bf9e9fd73de500d8347e214409fafR7XgGv-X3ofTM_SXyGupWhbz3dYLLWm7Etm8nPcTTM7q1qqKON7_5xQyTTkMjiaYdeCE_a9UM9zB0kEIT3C-5jXwXs1eFEWsW9L54H-DCE5J9xX2HWWVzPCRLEJEEwTIx_ECKg0Q_VpAYUoGoOL1UOTn4LytE0LeU9J7Th4jamaCWHzerSB7v8ykZrf82VGf&ci-process=originImage");
+    background-repeat:round;
     text-align: center;
     padding: 1px;
 

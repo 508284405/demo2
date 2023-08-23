@@ -1,6 +1,6 @@
 <template>
     <div style="display: flex;">
-        <span>示例：set x x (deprecated)</span>
+        <span>示例：setex x x (deprecated)</span>
         <Tip :version="`2.0.0`" :content="`设置 key 以保存字符串值，并将 key 设置为在给定秒数后超时`" style="margin-left: 10px;"></Tip>
     </div>
     <el-form ref="ruleFormRef" :model="ruleForm" status-icon :rules="rules" label-width="120px" label-position="left"

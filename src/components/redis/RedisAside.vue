@@ -30,7 +30,7 @@
                     <el-menu-item index="2-1" @click="to('/redis/directives/index')">对象</el-menu-item>
                     <el-menu-item index="2-2" @click="to('/redis/command/index')">命令列表<el-tag class="ml-2" type="success">{{
                         canmmandCount }}</el-tag></el-menu-item>
-                    <el-menu-item index="2-2" @click="to('/redis/config/index')">配置信息</el-menu-item>
+                    <el-menu-item index="2-3" @click="to('/redis/config/index')">配置信息</el-menu-item>
                 </el-menu-item-group>
                 <el-menu-item-group title="acl">
                     <el-menu-item index="2-3">auth</el-menu-item>

@@ -1,5 +1,5 @@
 <template>
-    <el-container class="layout-container-demo" style="height: 500px">
+    <el-container class="layout-container-demo">
       <el-aside width="200px">
         <RedisAside :id = 'id'></RedisAside>
       </el-aside>

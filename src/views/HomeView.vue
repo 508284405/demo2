@@ -17,15 +17,9 @@
   </div>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import CommonAside from "../components/CommonAside.vue";
 import HomeHeader from "../components/HomeHeader.vue";
-export default {
-  components: {
-      CommonAside,
-      HomeHeader
-  }
-}
 </script>
 
 <style lang="less" scoped>
@@ -40,6 +34,9 @@ export default {
       &>.el-container {
           &>.el-header {
               padding: 0%;
+          }
+          &>.el-main{
+            margin: 10px;
           }
       }
   }

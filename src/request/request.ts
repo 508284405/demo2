@@ -1,7 +1,7 @@
 import axios from 'axios'
 import whiteList from './whitelist'
 import {refresh} from '../api/login/login'
-const baseURL = 'http://192.168.3.65:8080'
+import common from './common'
 //允许发送cookie
 axios.defaults.withCredentials = true
 // declare module "axios" {
@@ -16,7 +16,7 @@ axios.defaults.withCredentials = true
 // create an axios instance
 const service = axios.create({
   // baseURL: 'http://chenyp.top:8008', // url = base url + request url
-  baseURL: baseURL, // url = base url + request url
+  baseURL: common.baseURL, // url = base url + request url
   // withCredentials: true, // send cookies when cross-domain requests
   timeout: 5000 // request timeout
 })
@@ -76,7 +76,7 @@ class Result {
     this.data = data
   }
 }
-export { Result,baseURL }
+export { Result }
 
 export default service
 

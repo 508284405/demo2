@@ -1,17 +1,97 @@
 <template>
     <el-header>
-        <h1>张三</h1>
-        <el-button class="header" type="info" @click="logout">退出</el-button>
+        <el-dropdown @command="handleCommand">
+            <span class="el-dropdown-link">
+                {{ user.name="1" }}
+            </span>
+            <template #dropdown>
+                <el-dropdown-menu>
+                    <el-dropdown-item command="a">个人资料</el-dropdown-item>
+                    <el-dropdown-item>设置</el-dropdown-item>
+                    <el-dropdown-item>退出</el-dropdown-item>
+                    <el-dropdown-item disabled>Action 4</el-dropdown-item>
+                    <el-dropdown-item divided>Action 5</el-dropdown-item>
+                </el-dropdown-menu>
+            </template>
+        </el-dropdown>
+        <el-avatar @click="profileDialogTableVisible = true"
+        :src="user.profilePictureUrl" />
+        <el-dialog v-model="profileDialogTableVisible" title="上传头像" style="width: 500px;">
+            <el-upload class="avatar-uploader" :action="common.uploadUrl"
+                :show-file-list="true" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
+                <img v-if="imageUrl" :src="imageUrl" class="avatar" />
+                <el-icon v-else class="avatar-uploader-icon">
+                    <Plus />
+                </el-icon>
+            </el-upload>
+            <div style="text-align: right;">
+                <el-button type="primary" style="display: inline-block;" plain @click="upload(imageUrl)">提交</el-button>
+            </div>
+        </el-dialog>
     </el-header>
 </template>
-<script lang="ts">
-export default {
-    methods: {
-        logout() {
-            window.sessionStorage.clear()
-            this.$router.push('/login')
+<script lang="ts" setup>
+import { useRouter } from 'vue-router';
+import { get,modifyProfilePicture } from '../api/login/user'
+import { onMounted, ref } from 'vue';
+import { ElMessage, uploadBaseProps, type UploadProps } from 'element-plus';
+import { Plus } from '@element-plus/icons-vue'
+import common from '../request/common'
+
+const router = useRouter()
+const uid = sessionStorage.getItem("uid") as unknown as number;
+const user = ref({
+    name: 'Tom',
+    profilePictureUrl: ""
+})
+onMounted(() => {
+    get(uid).then(res => {
+        if (res.data.code == 0) {
+            user.value = res.data.data
         }
+    })
+})
+
+const handleCommand = (command: string | number | object) => {
+    router.push("/self")
+    ElMessage(`click on item ${command}`)
+}
+
+const logout = () => {
+    window.sessionStorage.clear()
+    router.push('/login')
+}
+const profileDialogTableVisible = ref(false)
+const imageUrl = ref('')
+const handleAvatarSuccess: UploadProps['onSuccess'] = (
+  response,
+  uploadFile
+) => {
+    if(response.code==0){
+        imageUrl.value = response.data
+    }else{
+        ElMessage("上传失败")
     }
+}
+const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
+  if (rawFile.type == 'image/jpeg') {
+    ElMessage.error('Avatar picture must be JPG format!')
+    return false
+  } else if (rawFile.size / 1024 / 1024 > 2) {
+    ElMessage.error('Avatar picture size can not exceed 2MB!')
+    return false
+  }
+  return true
+}
+const upload = (url:string)=>{
+    modifyProfilePicture(uid,url).then(res=>{
+        if(res.data.code == 0){
+            user.value.profilePictureUrl = url
+            profileDialogTableVisible.value = false
+            ElMessage("上传成功")
+        }
+        imageUrl.value = ""
+    })
 }
 </script>
 <style lang="less" scoped>
@@ -48,6 +128,30 @@ export default {
             margin-left: 15px;
         }
     }
+}
+.avatar-uploader .avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
+}
+.avatar-uploader .el-upload {
+  border: 1px dashed var(--el-border-color);
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: var(--el-transition-duration-fast);
+}
 
+.avatar-uploader .el-upload:hover {
+  border-color: var(--el-color-primary);
+}
+
+.el-icon.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 400px;
+  height: 178px;
+  text-align: center;
 }
 </style>
