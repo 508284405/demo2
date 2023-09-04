@@ -1,4 +1,4 @@
-const baseURL = 'http://192.168.3.60:8081'
+const baseURL = 'http://192.168.1.11:8081'
 
 const loginUrl = '/user/user/login'
 const registerUrl = '/user/registry/account'
