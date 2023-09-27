@@ -23,7 +23,7 @@
         <el-table-column prop="port" label="PORT" width="180" />
         <el-table-column prop="model" label="模式" width="180">
             <template #default="scope">
-                {{ model[scope.row.model] }}
+                <!-- {{ model[scope.row.model] }} -->
             </template>
 
         </el-table-column>
